@@ -101,3 +101,54 @@ when you star a message, this is a response:
       u'_ts': 1302281959.677733
     }]
 }
+
+when you star a message:
+{u'kind': u'star',
+u'_id': u'19615108-6224-11e0-a4f2-4040006c4e80',
+u'star':
+{
+    u'message_url': u'/python/introducing-the-python-chatbot-gee-i-hope-this-works/595970/',
+    u'date_created': 1302296800.508293,
+    u'kind': u'star',
+    u'message':
+    {
+        u'embeds': [],
+        u'user':
+            {
+                u'username': u'llimllib',
+                u'url': u'/users/llimllib/',
+                u'id': u'1284',
+                u'img': u'https://secure.gravatar.com/avatar/aa7c1350d93036592f58f165318044db/?default=https%3A%2F%2Fconvore.com%2Fmedia%2Fimages%2Feric.png&amp;s=80'
+            },
+        u'stars':
+            [{
+                u'date_created': 1302296800.508293,
+                u'user':
+                {
+                    u'username': u'paulsmith',
+                    u'url': u'/users/paulsmith/',
+                    u'id': u'1060',
+                    u'img': u'https://convore2.s3.amazonaws.com/userpics/1060/1299852512.jpg'
+                }
+            }],
+        u'date_created': 1302296761.104996,
+        u'message': u'next up: karma ranking by stars',
+        u'id': u'595970'
+    },
+    u'user':
+        {
+        u'username': u'paulsmith',
+        u'url': u'/users/paulsmith/',
+        u'id': u'1060',
+        u'img': u'https://convore2.s3.amazonaws.com/userpics/1060/1299852512.jpg'
+        }
+},
+u'user':
+{
+    u'username': u'paulsmith',
+    u'url': u'/users/paulsmith/',
+    u'id': u'1060',
+    u'img': u'https://convore2.s3.amazonaws.com/userpics/1060/1299852512.jpg'
+},
+u'_ts': 1302296800.52687
+}
