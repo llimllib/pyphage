@@ -33,8 +33,11 @@ def send(topic_id, message):
     p("trying to send: %s to %s" % (message, topic_id))
     #does this make a request?
     conv_auth = requests.AuthObject(config.username, config.password)
-    requests.post("https://convore.com/api/topics/%s/messages/create.json" % topic_id,
-                  data=message, auth=conv_auth)
+    r = requests.post("https://convore.com/api/topics/%s/messages/create.json" % topic_id,
+                      data={"message": message}, auth=conv_auth)
+
+    assert r.status_code == 200
+    p("successful send")
 
 def main():
     init_plugins()
