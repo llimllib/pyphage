@@ -22,6 +22,8 @@ def init_plugins():
             for hook in re.findall("on_(\w*)", " ".join(dir(mod))):
                 p("attaching %s to %s" % (getattr(mod, "on_" + hook), hook))
                 hooks.setdefault(hook, []).append(getattr(mod, "on_" + hook))
+            if mod.__doc__:
+                hooks.setdefault('help', []).append(mod.__doc__)
         #bare except, because the modules could raise any number of errors
         #on import, and we want them not to kill our server
         except:
@@ -38,6 +40,12 @@ def send(topic_id, message):
 
     assert r.status_code == 200
     p("successful send")
+
+def help(topic_id):
+    if 'help' not in hooks: return
+
+    #TODO: currently an invalid send() doesn't throw any errors. Why not?
+    send(topic_id, "The python chatbot currently implements these commands:\n" + "\n".join(hooks['help']))
 
 def main():
     init_plugins()
@@ -61,14 +69,16 @@ def main():
                     p("calling %s" % hook)
                     hook(message)
 
-            #toss login and logout messages for now
-            #toss "x read group y" messages too
-            if message['kind'] in ['login', 'logout', 'read']:
-                continue
-
-            p(message)
+            #if the message is just /help, print our help
+            if message['kind'] == 'message' and message['message'] == "/help":
+                help(message['topic']['id'])
 
             cursor = message['_id']
+
+            #don't print login, logout, or read messages. Eventually TODO: DELETEME
+            if message['kind'] not in ['login', 'logout', 'read']:
+                p(message)
+
 
 if __name__=="__main__":
     main()
