@@ -1,3 +1,4 @@
+"""/doc <something>: return python 2.7's documentation for <something>"""
 import re
 import importlib
 import pydoc
@@ -10,7 +11,7 @@ class PlainTextDoc(pydoc.TextDoc):
 pydoc.text = PlainTextDoc()
 
 def on_message(message):
-    r = re.search(r"\/help ([\w.]+)", message[u'message'])
+    r = re.search(r"\/doc ([\w.]+)", message[u'message'])
     if not r: return
 
     thing = r.group(1)
