@@ -72,6 +72,10 @@ def main():
         assert r.status_code == 200
         response = json.loads(r.content)
         for message in response['messages']:
+            
+            #ignore messages sent by ourselves to (try and) avoid infinite loops
+            if message['user']['username'] == config.username:
+                continue
 
             #if we have any hooks for this kind of message, run the function
             if message['kind'] in hooks:
