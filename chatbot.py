@@ -3,6 +3,7 @@ import sys
 import importlib
 import traceback
 import re
+import sqlite3
 from glob import glob
 
 #pip install requests
@@ -13,6 +14,12 @@ import config
 def p(msg):
     print msg
     sys.stdout.flush()
+
+db = sqlite3.connect("pyphage.db")
+def query(sql, *params):
+    c = db.cursor()
+    c.eecute(sql, params)
+    return c
 
 hooks = {}
 def init_plugins():
