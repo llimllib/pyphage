@@ -36,8 +36,8 @@ def on_message(message):
     r = re.search(r"\/karma ?([\w\-_]+)?", message['message'])
     if not r: return
 
-    if not len(r.groups()):
-        msg = "The top 5 users by karma are:\n"
+    if not r.group(1):
+        msg = "The 5 users with the highest karma are:\n"
         for user, karma in query("SELECT user_name, karma FROM karma ORDER BY karma DESC LIMIT 5"):
             msg += "%s: %s\n" % (user, karma)
     else:
