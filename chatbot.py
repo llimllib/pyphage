@@ -18,7 +18,7 @@ def p(msg):
 db = sqlite3.connect("pyphage.db")
 def query(sql, *params):
     c = db.cursor()
-    c.eecute(sql, params)
+    c.execute(sql, params)
     return c
 
 hooks = {}
