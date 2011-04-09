@@ -33,11 +33,18 @@ def on_unstar(message):
                  VALUES (?, ?, ?)""", unstarred['id'], unstarred['username'], 10)
 
 def on_message(message):
-    r = re.search(r"\/karma", message['message'])
+    r = re.search(r"\/karma ?([\w\-_]+)?", message['message'])
     if not r: return
 
-    msg = ""
-    for user, karma in query("SELECT user_name, karma FROM karma ORDER BY karma DESC LIMIT 5"):
-        msg += "%s: %s\n" % (user, karma)
+    if not len(r.groups()):
+        msg = "The top 5 users by karma are:\n"
+        for user, karma in query("SELECT user_name, karma FROM karma ORDER BY karma DESC LIMIT 5"):
+            msg += "%s: %s\n" % (user, karma)
+    else:
+        karma = query("SELECT karma FROM karma WHERE user_name=?", r.group(1))
+        if not karma:
+            msg = "Unable to find user %s" % r.group(1)
+        else:
+            msg = "%s: %s" % (r.group(1), karma[0][0])
 
     send(message['topic']['id'], msg)
