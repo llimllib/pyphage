@@ -8,7 +8,7 @@ Examples:
 /eval zip(*[[1,2],[3,4]])
 [(1,3), (2,4)]"""
 import re
-#pip install sandbox
+#pip install pysandbox
 from sandbox import Sandbox
 
 from chatbot import send
