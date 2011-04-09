@@ -29,11 +29,18 @@ def init_plugins():
     for plugin in glob('plugins/[!_]*.py'):
         try:
             mod = importlib.import_module(plugin.replace("/", ".")[:-3])
+            modname = mod.__name__.split('.')[1]
+
             for hook in re.findall("on_(\w+)", " ".join(dir(mod))):
-                p("attaching %s %s to %s" % (plugin[8:], getattr(mod, "on_" + hook), hook))
-                hooks.setdefault(hook, []).append(getattr(mod, "on_" + hook))
+                hookfun = getattr(mod, "on_" + hook)
+                p("attaching %s.%s to %s" % (modname, hookfun, hook))
+                hooks.setdefault(hook, []).append(hookfun)
+
             if mod.__doc__:
-                hooks.setdefault('help', []).append(mod.__doc__)
+                firstline = mod.__doc__.split('\n')[0]
+                hooks.setdefault('help', []).append(firstline)
+                hooks.setdefault('extendedhelp', {})[modname] = mod.__doc__
+
         #bare except, because the modules could raise any number of errors
         #on import, and we want them not to kill our server
         except:
@@ -51,11 +58,21 @@ def send(topic_id, message):
     assert r.status_code == 200
     p("successful send")
 
-def help(topic_id):
+def help(message):
+    """Look for a help request and handle it if it's found"""
     if 'help' not in hooks: return
 
-    #TODO: currently an invalid send() doesn't throw any errors. Why not?
-    send(topic_id, "The python chatbot currently implements these commands:\n" + "\n".join(hooks['help']))
+    r = re.search(r"\/help ?([\w.\-_]+)?", message['message'])
+    if not r: return
+
+    if not r.group(1):
+        msg = "The python chatbot currently implements these commands:\n" + "\n".join(hooks['help'])
+    else:
+        if r.group(1) in hooks['extendedhelp']:
+            msg = hooks['extendedhelp'][r.group(1)]
+        else:
+            msg = "Sorry, could not find help on %s" % r.group(1)
+    send(message['topic']['id'], msg)
 
 def main():
     init_plugins()
@@ -77,15 +94,13 @@ def main():
             if message['user']['username'] == config.username:
                 continue
 
+            help(message)
+
             #if we have any hooks for this kind of message, run the function
             if message['kind'] in hooks:
                 for hook in hooks[message['kind']]:
                     p("calling %s" % hook)
                     hook(message)
-
-            #if the message is just /help, print our help
-            if message['kind'] == 'message' and message['message'] == "/help":
-                help(message['topic']['id'])
 
             cursor = message['_id']
 
