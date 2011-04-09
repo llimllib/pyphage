@@ -5,7 +5,7 @@ from urllib import quote
 from chatbot import send
 
 def on_message(message):
-    r = re.search(r"\/rtd ([\w._-]+) ?([\w._-]+)?", message[u'message'])
+    r = re.search(r"\/rtd ([\w._\-]+) ?([\w._\-]+)?", message[u'message'])
     if not r: return
 
     project = r.group(1)
