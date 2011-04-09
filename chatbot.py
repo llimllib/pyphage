@@ -94,7 +94,8 @@ def main():
             if message['user']['username'] == config.username:
                 continue
 
-            help(message)
+            if message['kind'] == 'message':
+                help(message)
 
             #if we have any hooks for this kind of message, run the function
             if message['kind'] in hooks:
