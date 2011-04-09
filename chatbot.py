@@ -19,7 +19,7 @@ def init_plugins():
     for plugin in glob('plugins/[!_]*.py'):
         try:
             mod = importlib.import_module(plugin.replace("/", ".")[:-3])
-            for hook in re.findall("on_(\w*)", " ".join(dir(mod))):
+            for hook in re.findall("on_(\w+)", " ".join(dir(mod))):
                 p("attaching %s to %s" % (getattr(mod, "on_" + hook), hook))
                 hooks.setdefault(hook, []).append(getattr(mod, "on_" + hook))
             if mod.__doc__:
