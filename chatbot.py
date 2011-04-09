@@ -19,7 +19,10 @@ db = sqlite3.connect("pyphage.db")
 def query(sql, *params):
     c = db.cursor()
     c.execute(sql, params)
-    return c
+    rows = c.fetchall()
+    c.close()
+    db.commit()
+    return rows
 
 hooks = {}
 def init_plugins():
