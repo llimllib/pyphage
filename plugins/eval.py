@@ -21,7 +21,7 @@ def on_message(message):
 
     try:
         result = sandbox.call(lambda: eval(r.group(1)))
+        send(message['topic']['id'], str(result))
     #we're running code, any error could throw an exception
     except:
         send(message['topic']['id'], "Error running code")
-    send(message['topic']['id'], str(result))
