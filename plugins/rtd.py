@@ -1,4 +1,4 @@
-"""/rtd <module> <function>: return a link to readthedocs for <module> and <function>"""
+"""/rtd <module> <function>: return a link to readthedocs for <module> and/or <function>"""
 import re
 from urllib import quote
 

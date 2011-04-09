@@ -1,4 +1,4 @@
-"""/zen: return the zen of python"""
+"""/zen:"""
 from chatbot import send
 
 def on_message(message):
