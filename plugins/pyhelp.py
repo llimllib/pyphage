@@ -16,7 +16,10 @@ def on_message(message):
 
     thing = r.group(1)
     try:
-        send(message['topic']['id'], pydoc.render_doc(bytes(thing)))
+        docs = pydoc.render_doc(bytes(thing))
+        #truncate to 20 lines and note that it's been truncated
+        docs = "\n".join(docs.split("\n")[:20]) + "\n<truncated>"
+        send(message['topic']['id'], docs)
     except ImportError:
         send(message['topic']['id'], "unable to find help on %s" % thing)
     except pydoc.ErrorDuringImport as e:
