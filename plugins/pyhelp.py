@@ -1,9 +1,9 @@
 """/doc <something>: return python 2.7's documentation for <something>"""
 import re
-import importlib
 import pydoc
+from urllib import quote
 
-from chatbot import send, p
+from chatbot import send
 
 #by default, render_doc uses shell escapes. Stop that.
 class PlainTextDoc(pydoc.TextDoc):
@@ -18,7 +18,7 @@ def on_message(message):
     try:
         docs = pydoc.render_doc(bytes(thing))
         #truncate to 20 lines and note that it's been truncated
-        docs = "\n".join(docs.split("\n")[:20]) + "\n<truncated>"
+        docs = "\n".join(docs.split("\n")[:20]) + "\n<truncated>  http://readthedocs.org/search/?q=" + quote(thing)
         send(message['topic']['id'], docs)
     except ImportError:
         send(message['topic']['id'], "unable to find help on %s" % thing)
