@@ -24,7 +24,10 @@ def on_message(message):
     try:
         ns = {'__result': None}
         sandbox.execute("import math; __result = " + r.group(1), locals=ns)
-        send(message['topic']['id'], unicode(ns['__result']))
+        res = unicode(ns['__result'])
+        if len(res) > 500:
+            res = res[:500] + " ..."
+        send(message['topic']['id'], res)
     #we're running code, any error could throw an exception
     except:
         send(message['topic']['id'], "Error running code")
