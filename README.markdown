@@ -6,7 +6,7 @@ It depends on the [requests](http://kennethreitz.com/blog/introducing-requests/)
 
 The "eval" plugin depends on [pysandbox](https://github.com/haypo/pysandbox).
 
-The python chatbot currently implements these commands:
+The python chatbot currently implements these commands:  
 /doc <something>: return python 2.7's documentation for <something>  
 /eval <expression>: use a restricted python environment to return the result of <expression>  
 /karma: who in the python group has the most karma?  
