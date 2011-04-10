@@ -13,10 +13,9 @@ import sys
 #pip install pysandbox
 from sandbox import Sandbox, SandboxConfig
 
-
 from chatbot import send, p
 
-sandbox = Sandbox(SandboxConfig("math"))
+sandbox = Sandbox(SandboxConfig("encodings", "math"))
 
 def on_message(message):
     r = re.search(r"\/eval (.+)", message['message'])
@@ -24,8 +23,8 @@ def on_message(message):
 
     try:
         ns = {'__result': None}
-        result = sandbox.execute("import math; __result = " + r.group(1), locals=ns)
-        send(message['topic']['id'], str(ns['__result']))
+        sandbox.execute("import math; __result = " + r.group(1), locals=ns)
+        send(message['topic']['id'], unicode(ns['__result']))
     #we're running code, any error could throw an exception
     except:
         send(message['topic']['id'], "Error running code")
