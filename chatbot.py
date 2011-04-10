@@ -84,30 +84,33 @@ def main():
 
     cursor = None
     while 1:
-        p('requesting')
-        r = req({'cursor': cursor}) if cursor else req()
-        assert r.status_code == 200
-        response = json.loads(r.content)
-        for message in response['messages']:
-            
-            #ignore messages sent by ourselves to (try and) avoid infinite loops
-            if message['user']['username'] == config.username:
-                continue
+        try:
+            p('requesting')
+            r = req({'cursor': cursor}) if cursor else req()
+            assert r.status_code == 200
+            response = json.loads(r.content)
+            for message in response['messages']:
 
-            if message['kind'] == 'message':
-                help(message)
+                #ignore messages sent by ourselves to (try and) avoid infinite loops
+                if message['user']['username'] == config.username:
+                    continue
 
-            #if we have any hooks for this kind of message, run the function
-            if message['kind'] in hooks:
-                for hook in hooks[message['kind']]:
-                    p("calling %s" % hook)
-                    hook(message)
+                if message['kind'] == 'message':
+                    help(message)
 
-            cursor = message['_id']
+                #if we have any hooks for this kind of message, run the function
+                if message['kind'] in hooks:
+                    for hook in hooks[message['kind']]:
+                        p("calling %s" % hook)
+                        hook(message)
 
-            #don't print login, logout, or read messages. Eventually TODO: DELETEME
-            if message['kind'] not in ['login', 'logout', 'read']:
-                p(message)
+                cursor = message['_id']
+
+                #don't print login, logout, or read messages. Eventually TODO: DELETEME
+                if message['kind'] not in ['login', 'logout', 'read']:
+                    p(message)
+        except KeyboardInterrupt:
+            sys.exit(0)
 
 
 if __name__=="__main__":
