@@ -53,7 +53,7 @@ def send(topic_id, message):
     #does this make a request?
     conv_auth = requests.AuthObject(config.username, config.password)
     r = requests.post("https://convore.com/api/topics/%s/messages/create.json" % topic_id,
-                      data={"message": message}, auth=conv_auth)
+                      data={"message": message.encode('utf-8')}, auth=conv_auth)
 
     assert r.status_code == 200
     p("successful send")
