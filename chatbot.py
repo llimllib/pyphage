@@ -96,6 +96,7 @@ def main():
             p(r.content)
             response = json.loads(r.content)
             for message in response['messages']:
+                cursor = message['_id']
 
                 #ignore messages sent by ourselves to (try and) avoid infinite loops
                 if message['user']['username'] == config.username:
@@ -109,8 +110,6 @@ def main():
                     for hook in hooks[message['kind']]:
                         p("calling %s" % hook)
                         hook(message)
-
-                cursor = message['_id']
 
                 #don't print login, logout, or read messages. Eventually TODO: DELETEME
                 if message['kind'] not in ['login', 'logout', 'read']:
