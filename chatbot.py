@@ -93,7 +93,6 @@ def main():
                 p("Got invalid status code %s on response body %s. Sleeping for 60." % (r.status_code, r.content))
                 sleep(60)
 
-            p(r.content)
             response = json.loads(r.content)
             for message in response['messages']:
                 cursor = message['_id']
