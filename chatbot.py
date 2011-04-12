@@ -4,6 +4,7 @@ import importlib
 import traceback
 import re
 import sqlite3
+from time import sleep
 from glob import glob
 
 #pip install requests
@@ -87,7 +88,12 @@ def main():
         try:
             p('requesting')
             r = req({'cursor': cursor}) if cursor else req()
-            assert r.status_code == 200
+
+            if not r.status_code == 200:
+                p("Got invalid status code %s on response body %s. Sleeping for 60." % (r.status_code, r.content))
+                sleep(60)
+
+            p(r.content)
             response = json.loads(r.content)
             for message in response['messages']:
 
