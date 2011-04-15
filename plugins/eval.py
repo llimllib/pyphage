@@ -15,7 +15,9 @@ from sandbox import Sandbox, SandboxConfig
 
 from chatbot import send, p
 
-sandbox = Sandbox(SandboxConfig("encodings", "math"))
+config = SandboxConfig("encodings", "math")
+config.timeout = 5
+sandbox = Sandbox(config)
 
 def on_message(message):
     r = re.search(r"\/eval (.+)", message['message'])
