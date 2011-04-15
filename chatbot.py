@@ -92,6 +92,7 @@ def main():
             if not r.status_code == 200:
                 p("Got invalid status code %s on response body %s. Sleeping for 60." % (r.status_code, r.content))
                 sleep(60)
+                continue
 
             response = json.loads(r.content)
             for message in response['messages']:
