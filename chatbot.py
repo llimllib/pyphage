@@ -49,15 +49,18 @@ def init_plugins():
             p("%s" % sys.exc_info()[0])
             p("%s" % traceback.format_exc())
 
-def send(topic_id, message):
-    p("trying to send: %s to %s" % (message, topic_id))
+def send(topic_id, message, **params):
     #does this make a request?
     conv_auth = requests.AuthObject(config.username, config.password)
+
+    data = {"message": message.encode('utf-8')}
+    data.update(params)
+
     r = requests.post("https://convore.com/api/topics/%s/messages/create.json" % topic_id,
-                      data={"message": message.encode('utf-8')}, auth=conv_auth)
+                      data=data, auth=conv_auth)
 
     assert r.status_code == 200
-    p("successful send")
+    p("successful send %s %s" % (message, data))
 
 def help(message):
     """Look for a help request and handle it if it's found"""
