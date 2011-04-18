@@ -85,6 +85,7 @@ def main():
 
     def req(params={}):
         return requests.get('https://convore.com/api/live.json', params=params, auth=conv_auth)
+            
 
     cursor = None
     while 1:
@@ -117,6 +118,11 @@ def main():
                 #don't print login, logout, or read messages. Eventually TODO: DELETEME
                 if message['kind'] not in ['login', 'logout', 'read']:
                     p(message)
+        #see NOTES, line 107
+        except requests.HTTPError:
+            p("HTTPError received:")
+            p("%s" % sys.exc_info()[0])
+            p("%s" % traceback.format_exc())
         except KeyboardInterrupt:
             sys.exit(0)
 

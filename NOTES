@@ -103,3 +103,25 @@ u'user':
 },
 u'_ts': 1302296800.52687
 }
+
+This traceback was received sometime around 4/17. Not clear why:
+
+Traceback (most recent call last):
+  File "chatbot.py", line 125, in <module>
+    main()
+  File "chatbot.py", line 93, in main
+    r = req({'cursor': cursor}) if cursor else req()
+  File "chatbot.py", line 87, in req
+    return requests.get('https://convore.com/api/live.json', params=params, auth=conv_auth)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/requests/core.py", line 445, in get
+    return request('GET', url, params=params, headers=headers, cookies=cookies, auth=auth)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/requests/core.py", line 430, in request
+    r.send()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/requests/core.py", line 204, in send
+    self._build_response(why)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/requests/core.py", line 146, in _build_response
+    self.response.headers = getattr(resp.info(), 'dict', None)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/urllib.py", line 979, in info
+    return self.headers
+AttributeError: 'HTTPError' object has no attribute 'headers'
+
